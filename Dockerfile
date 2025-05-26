@@ -6,7 +6,7 @@ LABEL version="0.1"
 
 VOLUME ["/certs", "/conf"]
 
-RUN apk add netcat-openbsd bc curl wget git bash openssl libressl
+RUN apk add netcat-openbsd bc curl wget git bash openssl libressl nginx-mod-http-geoip
 
 RUN cd /tmp/ && git clone https://github.com/acmesh-official/acme.sh.git
 
@@ -23,5 +23,9 @@ COPY service.conf.template /tmp
 RUN chmod +x /root/.acme.sh/entrypoint.sh
 
 RUN rm -rf /etc/nginx/conf.d && ln -s /conf /etc/nginx/conf.d
+
+# RUN wget https://dl.miyuru.lk/geoip/maxmind/country/maxmind4.dat.gz && gunzip maxmind4.dat.gz
+
+# COPY maxmind4.dat /usr/share/GeoIPCountry.dat
 
 ENTRYPOINT [ "/root/.acme.sh/entrypoint.sh" ]

@@ -46,7 +46,7 @@ do
       certSubj=${!subj}
     fi
     mkdir -vp /certs/${!host}
-    /usr/bin/openssl genrsa -out /certs/${!host}/key.pem 1024
+    /usr/bin/openssl genrsa -out /certs/${!host}/key.pem 2048
     /usr/bin/openssl req -new -key /certs/${!host}/key.pem \
             -out /certs/${!host}/cert.csr \
             -subj "$certSubj"
@@ -83,6 +83,13 @@ do
   FILE_NAME=$(echo $service | tr '[:upper:]' '[:lower:]').conf
   DOMAIN=${!host} PROXY=${!proxy} envsubst '$PROXY,$DOMAIN' < /tmp/service.conf.template > "/conf/${FILE_NAME}"
 done
+
+# Refresh ipsum ips
+level=4
+ipsumurl="https://raw.githubusercontent.com/stamparm/ipsum/master/levels/$level.txt"
+wget $ipsumurl -O $level.txt
+awk '{print "deny " $1";"}' $level.txt > /conf/blocklist.conf
+
 
 # Starting Nginx in daemon mode
 /usr/sbin/nginx
