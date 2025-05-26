@@ -33,5 +33,5 @@ jobs:
         context: .
         push: true
         tags: |
-          bh42/rainmaker2k/nginx-reverseproxy-letsencrypt:latest
-          bh42/rainmaker2k/nginx-reverseproxy-letsencrypt:${{ steps.date.outputs.date }}
+          rainmaker2k/nginx-reverseproxy-letsencrypt:latest
+          rainmaker2k/nginx-reverseproxy-letsencrypt:${{ steps.date.outputs.date }}
